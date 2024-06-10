@@ -24,7 +24,7 @@ public class Main {
             endTime1 = System.nanoTime();
             totalDuration1 += (endTime1 - startTime1);
         }
-        Thread.sleep(2000);
+        Thread.sleep(10000);
         System.out.println(" ------------- Total safe cache with synch  : " + totalDuration1 / (1000*repetitions) + " microseconds");
 
         for (int i = 0; i < repetitions; i++) {
@@ -33,7 +33,7 @@ public class Main {
             endTime2 = System.nanoTime();
             totalDuration2 += (endTime2 - startTime2);
         }
-        Thread.sleep(2000);
+        Thread.sleep(10000);
         System.out.println(" ------------- Total safe cache with locks  : " + totalDuration2 / (1000*repetitions) + " microseconds");
 
         for (int i = 0; i < repetitions; i++) {
@@ -42,11 +42,11 @@ public class Main {
             endTime3 = System.nanoTime();
             totalDuration3 += (endTime3 - startTime3);
         }
-        Thread.sleep(2000);
+        Thread.sleep(10000);
         System.out.println(" ------------- Total safe cache with hashmap: " + totalDuration3 / (1000*repetitions) + " microseconds");
     }
 
-    private static void testSafeCacheWithSynchronized() throws InterruptedException {
+    private static void testSafeCacheWithSynchronized() {
         CachedFactorizer safeCache = new CachedFactorizer();
         final ExecutorService executor1 = Executors.newFixedThreadPool(POOL_SIZE);
         try {
@@ -54,11 +54,7 @@ public class Main {
             for (int i = 1; i < 10000; i++) {
                 final int num = i % 5; // Alterna entre alguns números para aumentar a chance de colisão
                 executor1.submit(() -> {
-                    long taskStartTime = System.nanoTime();
                     safeCache.service(num);
-                    long taskEndTime = System.nanoTime();
-                    long taskDuration = taskEndTime - taskStartTime;
-                    //System.out.println("Task time taken: " + taskDuration + " nanoseconds");
                 });
             }
         } finally {
@@ -66,50 +62,35 @@ public class Main {
         }
     }
 
-    private static void testSafeCacheWithLocks() throws InterruptedException {
+    private static void testSafeCacheWithLocks() {
         SafeCachedLockFactorizer safeCache = new SafeCachedLockFactorizer();
         final ExecutorService executor = Executors.newFixedThreadPool(POOL_SIZE);
-        long startTime = System.nanoTime();
         try {
 
             for (int i = 1; i < 10000; i++) {
                 final int num = i % 5; // Alterna entre alguns números para aumentar a chance de colisão
                 executor.submit(() -> {
-                    long taskStartTime = System.nanoTime();
                     safeCache.service(num);
-                    long taskEndTime = System.nanoTime();
-                    long taskDuration = taskEndTime - taskStartTime;
-                    //System.out.println("Task time taken: " + taskDuration + " nanoseconds");
                 });
             }
         } finally {
             executor.shutdown();
-            long endTime = System.nanoTime();
-            long duration = endTime - startTime;
         }
     }
 
-    private static void testSafeCacheWithHashMap() throws InterruptedException {
+    private static void testSafeCacheWithHashMap() {
         SafeCacheWithHashMap safeCache = new SafeCacheWithHashMap();
         final ExecutorService executor = Executors.newFixedThreadPool(POOL_SIZE);
-        long startTime = System.nanoTime();
         try {
 
             for (int i = 1; i < 10000; i++) {
                 final int num = i % 5; // Alterna entre alguns números para aumentar a chance de colisão
                 executor.submit(() -> {
-                    long taskStartTime = System.nanoTime();
                     safeCache.service(num);
-                    long taskEndTime = System.nanoTime();
-                    long taskDuration = taskEndTime - taskStartTime;
-                    //System.out.println("Task time taken: " + taskDuration + " nanoseconds");
                 });
             }
         } finally {
             executor.shutdown();
-            long endTime = System.nanoTime();
-            long duration = endTime - startTime;
-            //System.out.println(" ------------- Total safe cache with map    : " + duration + " nanoseconds");
         }
     }
 
