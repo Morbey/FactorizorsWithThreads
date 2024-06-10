@@ -24,7 +24,6 @@ public class Main {
             endTime1 = System.nanoTime();
             totalDuration1 += (endTime1 - startTime1);
         }
-        Thread.sleep(10000);
         System.out.println(" ------------- Total safe cache with synch  : " + totalDuration1 / (1000*repetitions) + " microseconds");
 
         for (int i = 0; i < repetitions; i++) {
@@ -33,7 +32,6 @@ public class Main {
             endTime2 = System.nanoTime();
             totalDuration2 += (endTime2 - startTime2);
         }
-        Thread.sleep(10000);
         System.out.println(" ------------- Total safe cache with locks  : " + totalDuration2 / (1000*repetitions) + " microseconds");
 
         for (int i = 0; i < repetitions; i++) {
@@ -42,7 +40,6 @@ public class Main {
             endTime3 = System.nanoTime();
             totalDuration3 += (endTime3 - startTime3);
         }
-        Thread.sleep(10000);
         System.out.println(" ------------- Total safe cache with hashmap: " + totalDuration3 / (1000*repetitions) + " microseconds");
     }
 
